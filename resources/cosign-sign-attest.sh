@@ -1,5 +1,6 @@
 #!/bin/bash
 set -o errexit -o pipefail
+set -x
 
 SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)"
 
@@ -66,7 +67,7 @@ function cosign-cmd() {
     # (There are also numerous other ways to provide the secret key to cosign.)
     COSIGN_PASSWORD=$(base64d "$COSIGN_SECRET_PASSWORD") \
     COSIGN_KEY=$(base64d "$COSIGN_SECRET_KEY") \
-        cosign "$cmd" -y --key=env://COSIGN_KEY $REKOR_OPT "${opts[@]}" "$FULL_IMAGE_REF"
+        cosign "$cmd" -y --key=env://COSIGN_KEY "$REKOR_OPT" "${opts[@]}" "$FULL_IMAGE_REF"
 }
 
 # Generates data for an attestation predicate
